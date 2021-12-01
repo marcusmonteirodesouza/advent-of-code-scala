@@ -34,12 +34,12 @@ object Day1 {
     def partTwoGo(sonarSweepReport: List[Int],
                   numberOfLargerMeasurements: Int): Int = {
       sonarSweepReport match {
-        case prev1 :: prev2 :: prev3 :: curr1 :: rest =>
-          if (prev2 + prev3 + curr1 > prev1 + prev2 + prev3) {
-            partTwoGo(prev2 :: prev3 :: curr1 :: rest,
+        case prev1 :: prev2 :: prev3 :: curr :: rest =>
+          if (prev2 + prev3 + curr > prev1 + prev2 + prev3) {
+            partTwoGo(prev2 :: prev3 :: curr :: rest,
                       numberOfLargerMeasurements + 1)
           } else {
-            partTwoGo(prev2 :: prev3 :: curr1 :: rest,
+            partTwoGo(prev2 :: prev3 :: curr :: rest,
                       numberOfLargerMeasurements)
           }
         case _ => numberOfLargerMeasurements
