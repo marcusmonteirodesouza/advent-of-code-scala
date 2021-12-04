@@ -42,35 +42,7 @@ object Day4 {
 
     private def rows: Seq[Seq[Int]] = grid
 
-    private def columns: Seq[Seq[Int]] = {
-      @tailrec
-      def columnsGo(grid: BingoBoardGrid,
-                    column: Int,
-                    columns: Seq[Seq[Int]]): Seq[Seq[Int]] = {
-        if (column >= grid.size) {
-          return columns
-        }
-        columnsGo(grid, column + 1, columns :+ grid.map(_(column)))
-      }
-      columnsGo(grid, 0, List())
-    }
-
-    private def diagonals: Seq[Seq[Int]] = {
-      @tailrec
-      def diagonalsGo(grid: BingoBoardGrid,
-                      index: Int,
-                      diagonalNumbersByRow: Seq[(Int, Int)]): Seq[Seq[Int]] = {
-        if (index >= grid.size) {
-          return List(diagonalNumbersByRow.map(_._1),
-                      diagonalNumbersByRow.map(_._2))
-        }
-        diagonalsGo(grid,
-                    index + 1,
-                    diagonalNumbersByRow :+ (grid(index)(index), grid(index)(
-                      grid.size - 1 - index)))
-      }
-      diagonalsGo(grid, 0, List())
-    }
+    private def columns: Seq[Seq[Int]] = grid.transpose
 
     def mark(number: Int): Unit = {
       if (unmarked(number)) {
@@ -81,8 +53,7 @@ object Day4 {
 
     def hasWon: Boolean = {
       rows.exists(row => row.forall(number => marked.contains(number))) || columns
-        .exists(column => column.forall(number => marked.contains(number))) || diagonals
-        .exists(diagonal => diagonal.forall(number => marked.contains(number)))
+        .exists(column => column.forall(number => marked.contains(number)))
     }
 
     def score: Int = {
@@ -91,7 +62,8 @@ object Day4 {
   }
 
   private def readBingoGame = {
-    val lines = Source.fromResource("aoc2021/day-4.txt").getLines().toList
+
+  val lines = Source.fromResource("aoc2021/day-4.txt").getLines().toList
     val numbers = lines.head.split(',').toSeq.map(Integer.parseInt)
     val grids = lines
       .drop(2)
