@@ -20,7 +20,12 @@ object Day3 {
                            counter: Seq[Int]): (GammaRate, EpsilonRate) = {
         diagnosticReport match {
           case Nil =>
-            def getMostCommon(count: Int) = if (count > 0) "1" else "0"
+            def getMostCommon(count: Int) =
+              if (count <= 0) {
+                "0"
+              } else {
+                "1"
+              }
 
             def getLeastCommon(count: Int) = if (count < 0) "1" else "0"
 
@@ -77,13 +82,12 @@ object Day3 {
               val count0Bits = groupedByBit('0').size
               val count1Bits = groupedByBit('1').size
 
-              val mostCommonBit = if (count0Bits == count1Bits) {
-                '1'
-              } else if (count0Bits > count1Bits) {
-                '0'
-              } else {
-                '1'
-              }
+              val mostCommonBit =
+                if (count0Bits == count1Bits) '1'
+                else if (count0Bits > count1Bits) '0'
+                else {
+                  '1'
+                }
 
               val filteredRecords =
                 diagnosticReport.filter(_(position) == mostCommonBit)
